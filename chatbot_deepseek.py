@@ -1,48 +1,48 @@
-import os
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
+#!/usr/bin/env python3
 
-# --- 1. CONFIGURACIÓN DE OLLAMA ---
-# Por defecto, Ollama se ejecuta en http://localhost:11434
-# LangChain usa estas variables de entorno para saber dónde buscar el servidor OpenAI compatible.
-# Asegúrate de que Ollama esté corriendo y Mistral esté cargado.
-# Es una clave ficticia, no necesaria para Ollama local.
-os.environ["OPENAI_API_KEY"] = "sk-ollama-local"
-os.environ["OPENAI_API_BASE"] = "http://localhost:11434/v1"
+"""
+Simple chatbot with one role and one question, via openai class (request method).
+Output in terminal.
+"""
 
-# --- 2. INICIALIZAR EL MODELO LLM ---
-# Usamos ChatOpenAI y le especificamos el modelo que descargaste.
-# En este caso, el modelo 'mistral' que descargaste con 'ollama pull mistral'.
-try:
-    llm = ChatOpenAI(
-        model="deepseek-r1",
-        temperature=0.0  # Baja temperatura para respuestas más deterministas
-    )
-except Exception as e:
-    print(f"Error al inicializar ChatOpenAI. Asegúrate de que Ollama está corriendo y el modelo 'mistral' está descargado.")
-    print(f"Detalle del error: {e}")
-    exit()
+# import os, time
+from openai import OpenAI
 
-# --- 3. DEFINIR EL PROMPT Y LA CADENA ---
-# Definimos la plantilla del prompt que enviaremos.
-prompt = ChatPromptTemplate.from_messages([
-    ("system", "Eres un asistente de IA útil y conciso, llamado Sebastian. Responde solo lo que se te pregunta."),
-    ("user", "{pregunta}")
-])
 
-# Creamos una cadena simple: Prompt -> LLM -> Parser (para obtener la respuesta como string)
-chain = prompt | llm | StrOutputParser()
+# Model setup
+STEAM = True
+MAX_TOKENS = 100
+TEMPERATURE = 0.0
 
-# --- 4. HACER LA CONSULTA DE PRUEBA ---
-pregunta_usuario = "¿Cuáles son los 3 pasos principales para construir un agente de IA que consulte una base de datos?"
+system_prompt = "Eres un asistente de IA útil y conciso Eres un asistente de IA útil y conciso, llamado Sebastian. Responde solo lo que se te pregunta."
+user_prompt = "¿Cuáles son los 3 pasos principales para construir un agente de IA que consulte una base de datos?"
 
-print("--- Ejecutando Consulta ---")
-print(f"Pregunta: {pregunta_usuario}")
+openai = OpenAI(base_url='http://localhost:11434/v1', api_key='ollama')
 
-# Invocar la cadena con la pregunta
-respuesta = chain.invoke({"pregunta": pregunta_usuario})
+# Chat with LLM
+model_response = openai.chat.completions.create(
+    model='deepseek-r1',
+    messages=[
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt}
+    ],
+    stream=STEAM,
+    max_tokens=MAX_TOKENS,
+    temperature=TEMPERATURE
+)
 
-print("\n--- Respuesta de Mistral (vía Ollama) ---")
-print(respuesta)
-print("---------------------------------------")
+print(f"{STEAM=}")
+
+
+# Response result (in terminal)
+if STEAM:
+    response = ""
+    for chunk in model_response:
+        response += chunk.choices[0].delta.content or ''
+        response = response.replace("```", "").replace(
+            "markdown", "").replace("**", "")
+        print(response)
+        # time.sleep(0.3) # Comment this line for slow cpu
+else:
+    result = model_response.choices[0].message.content
+    print(result)

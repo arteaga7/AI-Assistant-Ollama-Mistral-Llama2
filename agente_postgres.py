@@ -22,7 +22,7 @@ DATABASE_URI = (
 )
 
 # 1.3. Tablas a exponer al LLM
-TARGET_TABLES = ['dimSensors', 'dimDevices', 'factLecturas']
+TARGET_TABLES = ['dimCities']
 
 
 # --- 2. INICIALIZACIÓN DE COMPONENTES ---
@@ -63,7 +63,7 @@ agent_executor = create_sql_agent(
 
 # --- 4. EJECUCIÓN DE LA CONSULTA ---
 
-pregunta_usuario = "muestra las primeras 5 filas de la tabla 'dimSensors'."
+pregunta_usuario = "muestra las primeras 5 filas de la tabla 'dimCities'."
 
 print("\n" + "="*50)
 print(f"PREGUNTA AL AGENTE: {pregunta_usuario}")
