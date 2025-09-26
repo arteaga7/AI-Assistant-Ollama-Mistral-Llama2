@@ -5,13 +5,11 @@ from langchain.chains import create_sql_agent
 
 # --- 1. CONFIGURACIÓN DEL ENTORNO LOCAL ---
 
-# 1.1. Configuración de Ollama (Mistral)
 # Ollama expone un API compatible con OpenAI en localhost:11434/v1
 # Clave ficticia para el conector de LangChain
 os.environ["OPENAI_API_KEY"] = "sk-ollama-local"
 os.environ["OPENAI_API_BASE"] = "http://localhost:11434/v1"
 
-# 1.2. Configuración de PostgreSQL (AJUSTA ESTOS VALORES)
 # Formato: postgresql://usuario:contraseña@host:puerto/nombre_base_de_datos
 POSTGRES_USER = "tu_usuario"
 POSTGRES_PASS = "tu_contraseña"
@@ -33,7 +31,7 @@ TARGET_TABLES = ['dimSensors', 'dimDevices', 'factLecturas']
 print("Inicializando LLM Mistral (vía Ollama)...")
 try:
     llm = ChatOpenAI(
-        model="mistral",
+        model="deepseek-r1",
         temperature=0.0
     )
 except Exception as e:

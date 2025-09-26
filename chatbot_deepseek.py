@@ -16,7 +16,7 @@ os.environ["OPENAI_API_BASE"] = "http://localhost:11434/v1"
 # En este caso, el modelo 'mistral' que descargaste con 'ollama pull mistral'.
 try:
     llm = ChatOpenAI(
-        model="mistral",
+        model="deepseek-r1",
         temperature=0.0  # Baja temperatura para respuestas más deterministas
     )
 except Exception as e:
@@ -27,7 +27,7 @@ except Exception as e:
 # --- 3. DEFINIR EL PROMPT Y LA CADENA ---
 # Definimos la plantilla del prompt que enviaremos.
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "Eres un asistente de IA útil y conciso. Responde solo lo que se te pregunta."),
+    ("system", "Eres un asistente de IA útil y conciso, llamado Sebastian. Responde solo lo que se te pregunta."),
     ("user", "{pregunta}")
 ])
 

@@ -1,5 +1,5 @@
 # AI-Assistant-Ollama-Mistral-Llama2
-AI-Assistant using Deepseek-r1, Mistral and Llama2 models runing locally on the Ollama server.
+In this repository, an AI-Assistant is created, implementing Deepseek-r1, Mistral or Llama 2 models running locally on the Ollama server without internet connexion.
 
 
 ## 🚀 Installation
@@ -25,7 +25,7 @@ python3 -m venv env && source env/bin/activate && pip3 install -r requirements.t
 ```
 ollama run deepseek-r1
 ```
-2. Run script "chatbot_mistral.py":
+2. In another terminal, run the script "chatbot_deepseek.py":
 
 ```
 python chatbot_deepseek.py
